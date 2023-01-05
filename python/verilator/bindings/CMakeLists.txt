@@ -29,7 +29,7 @@ include(GrPybind)
 ########################################################################
 
 list(APPEND verilator_python_files
-    python_bindings.cc)
+    axis_python.cc python_bindings.cc)
 
 GR_PYBIND_MAKE_OOT(verilator
    ../../..

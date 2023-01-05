@@ -7,11 +7,18 @@
 #
 
 ########################################################################
+# Verilator wrappers
+########################################################################
+set(TEMPLATE_DUT_SRC ${CMAKE_CURRENT_SOURCE_DIR}/verilator_dut.cpp PARENT_SCOPE)
+set(TEMPLATE_DUT_HDR ${CMAKE_CURRENT_SOURCE_DIR}/verilator_dut.h PARENT_SCOPE)
+
+########################################################################
 # Setup library
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
 list(APPEND verilator_sources
+    axis_impl.cc
 )
 
 set(verilator_sources "${verilator_sources}" PARENT_SCOPE)

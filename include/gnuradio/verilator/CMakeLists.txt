@@ -11,5 +11,5 @@
 ########################################################################
 install(FILES
     api.h
-    DESTINATION include/gnuradio/verilator
+    axis.h DESTINATION include/gnuradio/verilator
 )
