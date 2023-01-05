@@ -22,7 +22,7 @@ private:
     float d_io_ratio;
     std::string d_verilator_options;
 
-    std::shared_ptr<::verilator::tb::Axis<T> > dut;
+    std::shared_ptr<::verilator::tb::Axis<T> > d_dut;
 
 public:
     axis_impl(const char* libso_filepath, const char* options);

@@ -10,7 +10,7 @@
 This is the GNU Radio VERILATOR module. Place your Python package
 description here (python/__init__.py).
 '''
-import os
+# import os
 
 # import pybind11 generated symbols into the verilator namespace
 try:
@@ -20,4 +20,5 @@ except ModuleNotFoundError:
     pass
 
 # import any pure python here
+from .axis_xx import axis_ii
 #

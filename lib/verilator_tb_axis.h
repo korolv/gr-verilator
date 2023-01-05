@@ -19,8 +19,9 @@ template <class T>
 class Axis
 {
 private:
-    void* top;
-    void* trace;
+    void* d_top;
+    void* d_trace;
+    float d_io_ratio;
     struct {
         std::int8_t s_axis_tvalid;
         std::int8_t s_axis_tready;
@@ -31,13 +32,15 @@ private:
         T s_axis_tdata;
         T m_axis_tdata;
     } gr;
-    std::uint64_t sim_time;
-    unsigned clock_time;
+    std::uint64_t d_time;
+    unsigned d_time_per_clock;
 
 public:
-    Axis(void* top);
+    Axis(void* top, float io_ratio);
     virtual ~Axis();
 
+    virtual void forecast(int noutput_items,
+                          std::vector<int>& ninput_items_required);
     virtual WorkResult general_work(int noutput_items,
                                     std::vector<int>& ninput_items,
                                     std::vector<const void*>& input_items,

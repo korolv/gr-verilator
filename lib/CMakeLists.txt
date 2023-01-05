@@ -9,8 +9,8 @@
 ########################################################################
 # Verilator wrappers
 ########################################################################
-set(TEMPLATE_DUT_SRC ${CMAKE_CURRENT_SOURCE_DIR}/verilator_dut.cpp PARENT_SCOPE)
-set(TEMPLATE_DUT_HDR ${CMAKE_CURRENT_SOURCE_DIR}/verilator_dut.h PARENT_SCOPE)
+set(TEMPLATE_DUT_SRC ${CMAKE_CURRENT_SOURCE_DIR}/verilator_tb_axis.cpp PARENT_SCOPE)
+set(TEMPLATE_DUT_HDR ${CMAKE_CURRENT_SOURCE_DIR}/verilator_tb_axis.h PARENT_SCOPE)
 
 ########################################################################
 # Setup library

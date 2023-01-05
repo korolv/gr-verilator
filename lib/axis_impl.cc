@@ -29,7 +29,7 @@ axis_impl<T>::axis_impl(const char* libso_filepath, const char* options)
      gr::io_signature::make(1, 1, sizeof(T))),
      d_io_ratio(1)
 {
-    typedef std::shared_ptr<::verilator::tb::Axis<T> > (*Create) ();
+    typedef std::shared_ptr<::verilator::tb::Axis<T> > (*Create) (float);
 
     void *handle = dlopen(libso_filepath, RTLD_LAZY);
     assert(handle != nullptr);
@@ -37,7 +37,8 @@ axis_impl<T>::axis_impl(const char* libso_filepath, const char* options)
     Create create = reinterpret_cast<Create>(dlsym(handle, "create_int32"));
     assert(create != nullptr);
 
-    dut = create();
+    float io_ratio = 1;
+    d_dut = create(io_ratio);
 }
 
 /*
@@ -49,18 +50,18 @@ axis_impl<T>::~axis_impl() {}
 template <class T>
 void axis_impl<T>::forecast(int noutput_items, gr_vector_int& ninput_items_required)
 {
-    ninput_items_required[0] = std::round(d_io_ratio * noutput_items);
+    d_dut->forecast(noutput_items, ninput_items_required);
 }
 
 template <class T>
 int axis_impl<T>::general_work(int noutput_items,
-                            gr_vector_int& ninput_items,
-                            gr_vector_const_void_star& input_items,
-                            gr_vector_void_star& output_items)
+                                gr_vector_int& ninput_items,
+                                gr_vector_const_void_star& input_items,
+                                gr_vector_void_star& output_items)
 {
     // Do <+signal processing+>
     ::verilator::tb::WorkResult result;
-    result = dut->general_work(noutput_items, ninput_items, input_items, output_items);
+    result = d_dut->general_work(noutput_items, ninput_items, input_items, output_items);
 
     int ratio = result.items.output*100;
     ratio /= result.items.input;

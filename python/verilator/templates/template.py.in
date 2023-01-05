@@ -1,0 +1,10 @@
+
+class h:
+    content = '''
+@dut_hdr_content@
+'''
+
+class cpp:
+    content = '''
+@dut_src_content@
+'''

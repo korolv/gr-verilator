@@ -1,0 +1,40 @@
+id: verilator_axis
+label: AXI-Stream
+category: '[Verilator]'
+
+templates:
+  imports: from gnuradio import verilator
+  make: verilator.axis_${type.fcn}(${verilogfile}, ${io_ratio}, ${verilator_options})
+
+parameters:
+- id: type
+  label: IO Type
+  dtype: enum
+  options: [int]
+  option_attributes:
+    fcn: [ii]
+
+- id: verilogfile
+  label: Verilog File
+  dtype: file_open
+
+- id: io_ratio
+  label: IO Ratio
+  dtype: real
+  default: '1.0'
+
+- id: verilator_options
+  label: Verilator Options
+  dtype: string
+  default: '""'
+
+inputs:
+- domain: stream
+  dtype: int
+
+outputs:
+- domain: stream
+  dtype: int
+
+
+file_format: 1

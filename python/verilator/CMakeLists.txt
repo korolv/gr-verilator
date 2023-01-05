@@ -15,6 +15,7 @@ if(NOT PYTHONINTERP_FOUND)
 endif()
 
 add_subdirectory(bindings)
+add_subdirectory(templates)
 
 ########################################################################
 # Install python sources
@@ -22,7 +23,7 @@ add_subdirectory(bindings)
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    DESTINATION ${GR_PYTHON_DIR}/gnuradio/verilator
+    axis_xx.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/verilator
 )
 
 ########################################################################
@@ -39,3 +40,4 @@ add_custom_target(
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}
           ${CMAKE_BINARY_DIR}/test_modules/gnuradio/verilator/
 )
+GR_ADD_TEST(qa_axis_xx ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_axis_xx.py)
