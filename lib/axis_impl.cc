@@ -15,7 +15,7 @@ namespace verilator {
 template <class T>
 typename axis<T>::sptr axis<T>::make(const char* libso_filepath, const char* options)
 {
-    return gnuradio::make_block_sptr<axis_impl<T>>(libso_filepath, options);
+    return gnuradio::make_block_sptr<axis_impl<T> >(libso_filepath, options);
 }
 
 
@@ -24,12 +24,12 @@ typename axis<T>::sptr axis<T>::make(const char* libso_filepath, const char* opt
  */
 template <class T>
 axis_impl<T>::axis_impl(const char* libso_filepath, const char* options)
-    :gr::block("verilator_axis",
+    :gr::block("verilator_axis_<T>",
      gr::io_signature::make(1, 1, sizeof(T)),
      gr::io_signature::make(1, 1, sizeof(T))),
      d_io_ratio(1)
 {
-    typedef std::shared_ptr<::verilator::tb::Axis<T> > (*Create) (float);
+    typedef std::shared_ptr<::verilator::tb::Axis<std::int32_t> > (*Create) (float);
 
     void *handle = dlopen(libso_filepath, RTLD_LAZY);
     assert(handle != nullptr);
@@ -76,6 +76,7 @@ int axis_impl<T>::general_work(int noutput_items,
 }
 
 template class axis<std::int32_t>;
+template class axis<std::complex<std::int16_t> >;
 
 } /* namespace verilator */
 } /* namespace gr */

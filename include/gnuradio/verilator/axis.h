@@ -38,6 +38,8 @@ public:
 };
 
 typedef axis<std::int32_t> axis_ii;
+typedef axis<std::complex<std::int16_t> > axis_sc16;
+
 } // namespace verilator
 } // namespace gr
 

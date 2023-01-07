@@ -131,3 +131,36 @@ class axis_ii(gr.hier_block2, axis_xx):
             libso_filepath,
             self.verilator_options
         )
+
+
+class axis_sc16(gr.hier_block2, axis_xx):
+    """
+    Axi-stream instance for complex int16 data type
+    """
+    def __init__(self, verilog_file_path, io_ratio, verilator_options):
+        gr.hier_block2.__init__(
+            self,
+            "Verilator AXI-Stream",
+            gr.io_signature(1, 1, gr.sizeof_int),
+            gr.io_signature(1, 1, gr.sizeof_int)
+        )
+        axis_xx.__init__(
+            self,
+            verilog_file_path,
+            io_ratio,
+            verilator_options,
+        )
+        self.data_width = 32
+        self.build()
+
+        ##################################################
+        # Conections
+        ##################################################
+        self.connect((self, 0), (self.heart, 0))
+        self.connect((self.heart, 0), (self, 0))
+
+    def new_axis(self, libso_filepath):
+        return pybind.axis_sc16(
+            libso_filepath,
+            self.verilator_options
+        )

@@ -4,15 +4,15 @@ category: '[Verilator]'
 
 templates:
   imports: from gnuradio import verilator
-  make: verilator.axis_${type.fcn}(${verilogfile}, ${io_ratio}, ${verilator_options})
+  make: verilator.axis_${type.type}(${verilogfile}, ${io_ratio}, "")
 
 parameters:
 - id: type
   label: IO Type
   dtype: enum
-  options: [int]
+  options: [int, sc16]
   option_attributes:
-    fcn: [ii]
+    type: [ii, sc16]
 
 - id: verilogfile
   label: Verilog File
@@ -23,18 +23,13 @@ parameters:
   dtype: real
   default: '1.0'
 
-- id: verilator_options
-  label: Verilator Options
-  dtype: string
-  default: '""'
-
 inputs:
 - domain: stream
-  dtype: int
+  dtype: ${type.type}
 
 outputs:
 - domain: stream
-  dtype: int
+  dtype: ${type.type}
 
 
 file_format: 1
