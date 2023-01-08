@@ -89,10 +89,9 @@ WorkResult Axis<T>::general_work(int noutput_items,
 
     WorkResult result;
     result.noutput_items = 0;
-    bool one_more_input;
 
     do {
-        gr.m_axis_tvalid = (ninput_items[0] > result.items.input);
+        gr.m_axis_tvalid = (noutput_items > result.items.input); /* FIXME: use io_ratio */
         if (gr.m_axis_tvalid)
             gr.m_axis_tdata = in[result.items.input];
         gr.s_axis_tready = (noutput_items > result.items.output);
@@ -122,8 +121,7 @@ WorkResult Axis<T>::general_work(int noutput_items,
         gr.s_axis_tdata = dut->m_axis_tdata;
 
         /* Resulting */
-        one_more_input = gr.m_axis_tvalid && gr.m_axis_tready;
-        if (one_more_input) {
+        if (gr.m_axis_tvalid && gr.m_axis_tready) {
             result.items.input++;
         }
 
@@ -132,7 +130,7 @@ WorkResult Axis<T>::general_work(int noutput_items,
             result.items.output++;
         }
 
-    } while (one_more_input || gr.s_axis_tvalid);
+    } while (gr.s_axis_tready);
 
     return result;
 }
