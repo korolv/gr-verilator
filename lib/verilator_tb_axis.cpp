@@ -8,6 +8,8 @@
 #include <memory>
 #ifdef DUT_TRACE
 #include <verilated_vcd_c.h>
+#define stringer0(x) #x
+#define stringer(x) stringer0(x)
 #endif
 #include "verilator_tb_axis.h"
 
@@ -50,7 +52,7 @@ d_time_per_clock(1)
     Verilated::traceEverOn(true);
     d_trace = new VerilatedVcdC();
     CAST_DUT(d_top)->trace(CAST_TRACE(d_trace), 5);
-    CAST_TRACE(d_trace)->open("/home/devel/Developments/gr-verilator/build/waveform.vcd");
+    CAST_TRACE(d_trace)->open(stringer(DUT_TRACE));
 #endif
 
     CAST_DUT(d_top)->clock = 0;

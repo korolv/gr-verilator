@@ -14,6 +14,7 @@ import os
 import tempfile
 import subprocess
 import shutil
+import traceback
 from . import template
 
 
@@ -36,15 +37,24 @@ class WorkingDirectory(object):
 
 
 class axis_xx(object):
-    def __init__(self, verilog_file_path, io_ratio, verilator_options):
+    def __init__(self, verilog_file_path, io_ratio, verilator_options, trace=False):
         self.logger = gr.logger(self.alias())
         self.data_width = 64
         self.heart = None
-        self.trace_file = None
+        self.trace_filepath = None
 
         ##################################################
         # Parameters
         ##################################################
+        if trace:
+            (script_path, line_number, function_name, text_line)=traceback.extract_stack()[-3]
+            trace_dirname = os.path.dirname(script_path)
+            pos_verilator_axis = text_line.find('verilator_axis')
+            pos_assignment = text_line.find('=')
+            if pos_verilator_axis >= 0 and pos_assignment >= 0:
+                trace_filename = text_line[pos_verilator_axis:pos_assignment].strip()
+                self.trace_filepath = os.path.join(trace_dirname, f'{trace_filename}.vcd')
+
         self.verilog = verilog_file_path
         self.io_ratio = io_ratio
         self.verilator_options = verilator_options
@@ -73,8 +83,8 @@ class axis_xx(object):
                     self.verilog,
                     WRAPPER_CPP
                 ]
-                if (self.trace_file):
-                    verilator_args.extend(['-CFLAGS', '-fPIC --std=c++11 -Wall -DDUT_TRACE', '--trace'])
+                if (self.trace_filepath):
+                    verilator_args.extend(['-CFLAGS', f'-fPIC --std=c++11 -Wall -DDUT_TRACE="{self.trace_filepath}"', '--trace'])
                 else:
                     verilator_args.extend(['-CFLAGS', '-fPIC --std=c++11 -Wall'])
                 subprocess.run(verilator_args, stdout=subprocess.PIPE, check=True)
@@ -104,7 +114,7 @@ class axis_ii(gr.hier_block2, axis_xx):
     """
     Axi-stream instance for int32 data type
     """
-    def __init__(self, verilog_file_path, io_ratio, verilator_options):
+    def __init__(self, verilog_file_path, io_ratio, verilator_options, **kwargs):
         gr.hier_block2.__init__(
             self,
             "Verilator AXI-Stream",
@@ -116,6 +126,7 @@ class axis_ii(gr.hier_block2, axis_xx):
             verilog_file_path,
             io_ratio,
             verilator_options,
+            **kwargs
         )
         self.data_width = 32
         self.build()
@@ -137,7 +148,7 @@ class axis_sc16(gr.hier_block2, axis_xx):
     """
     Axi-stream instance for complex int16 data type
     """
-    def __init__(self, verilog_file_path, io_ratio, verilator_options):
+    def __init__(self, verilog_file_path, io_ratio, verilator_options, **kwargs):
         gr.hier_block2.__init__(
             self,
             "Verilator AXI-Stream",
@@ -149,6 +160,7 @@ class axis_sc16(gr.hier_block2, axis_xx):
             verilog_file_path,
             io_ratio,
             verilator_options,
+            **kwargs
         )
         self.data_width = 32
         self.build()
