@@ -40,4 +40,5 @@ add_custom_target(
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}
           ${CMAKE_BINARY_DIR}/test_modules/gnuradio/verilator/
 )
-GR_ADD_TEST(qa_axis_xx ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_axis_xx.py)
+GR_ADD_TEST(qa_axis_ii ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_axis_ii.py)
+GR_ADD_TEST(qa_axis_sc16 ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_axis_sc16.py)

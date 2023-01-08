@@ -2,14 +2,14 @@
 /* 
  * Do not use special Characters in this code!
  */
-#include "verilator_tb_axis.h"
 
 #include <verilated.h>
-#include <verilated_vcd_c.h>
 #include "DesignUnderTest.h"
 #include <memory>
-
-// #include <iostream>
+#ifdef DUT_TRACE
+#include <verilated_vcd_c.h>
+#endif
+#include "verilator_tb_axis.h"
 
 #define CAST_DUT(x)   reinterpret_cast<DesignUnderTest*>(x)
 #define CAST_TRACE(x) reinterpret_cast<VerilatedVcdC*>(x)
@@ -60,10 +60,12 @@ d_time_per_clock(1)
 template <class T>
 Axis<T>::~Axis()
 {
+#ifdef DUT_TRACE
     CAST_TRACE(d_trace)->close();
+    delete CAST_TRACE(d_trace);
+#endif
 
     delete CAST_DUT(d_top);
-    delete CAST_TRACE(d_trace);
 }
 
 template <class T>
