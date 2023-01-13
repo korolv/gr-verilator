@@ -37,8 +37,7 @@ axis_impl<T>::axis_impl(const char* libso_filepath, const char* options)
     Create create = reinterpret_cast<Create>(dlsym(handle, "create_int32"));
     assert(create != nullptr);
 
-    float io_ratio = 1;
-    d_dut = create(io_ratio);
+    d_dut = create(d_io_ratio);
 }
 
 /*
@@ -63,10 +62,7 @@ int axis_impl<T>::general_work(int noutput_items,
     ::verilator::tb::WorkResult result;
     result = d_dut->general_work(noutput_items, ninput_items, input_items, output_items);
 
-    int ratio = result.items.output*100;
-    ratio /= result.items.input;
-    ratio -= d_io_ratio*100;
-    if (ratio != 0)
+    if (result.items.input != std::round(d_io_ratio * result.items.output))
         gr::block::d_logger->warn("Too big ratio difference input/output: {}/{}", result.items.input, result.items.output);
 
     gr::block::consume_each(result.items.input);

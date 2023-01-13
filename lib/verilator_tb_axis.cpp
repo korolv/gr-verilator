@@ -89,9 +89,10 @@ WorkResult Axis<T>::general_work(int noutput_items,
 
     WorkResult result;
     result.noutput_items = 0;
+    int ninput_items_required = std::round(d_io_ratio * noutput_items);
 
     do {
-        gr.m_axis_tvalid = (noutput_items > result.items.input); /* FIXME: use io_ratio */
+        gr.m_axis_tvalid = (ninput_items_required > result.items.input);
         if (gr.m_axis_tvalid)
             gr.m_axis_tdata = in[result.items.input];
         gr.s_axis_tready = (noutput_items > result.items.output);
