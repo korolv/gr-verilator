@@ -20,5 +20,4 @@ except ModuleNotFoundError:
     pass
 
 # import any pure python here
-from .axis_xx import axis_ii, axis_sc16
-#
+from .axis_xx import axis_ii

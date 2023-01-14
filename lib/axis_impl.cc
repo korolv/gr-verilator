@@ -72,7 +72,6 @@ int axis_impl<T>::general_work(int noutput_items,
 }
 
 template class axis<std::int32_t>;
-template class axis<std::complex<std::int16_t> >;
 
 } /* namespace verilator */
 } /* namespace gr */

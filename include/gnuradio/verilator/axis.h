@@ -24,7 +24,7 @@ template <class T>
 class VERILATOR_API axis : virtual public gr::block
 {
 public:
-    typedef std::shared_ptr<axis> sptr;
+    typedef std::shared_ptr<axis<T> > sptr;
 
     /*!
      * \brief Return a shared_ptr to a new instance of verilator::axis.
@@ -38,7 +38,6 @@ public:
 };
 
 typedef axis<std::int32_t> axis_ii;
-typedef axis<std::complex<std::int16_t> > axis_sc16;
 
 } // namespace verilator
 } // namespace gr

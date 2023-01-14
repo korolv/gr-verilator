@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(axis.h)                                                    */
-/* BINDTOOL_HEADER_FILE_HASH(1cb0277b74c296ef15295e2d7092f524)                     */
+/* BINDTOOL_HEADER_FILE_HASH(8f59f4fde2521942a00ed4ed69e75c75)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
@@ -45,5 +45,4 @@ void bind_axis(py::module& m)
 {
 
     bind_axis_template<std::int32_t>(m, "axis_ii");
-    bind_axis_template<std::complex<std::int16_t> >(m, "axis_sc16");
 }

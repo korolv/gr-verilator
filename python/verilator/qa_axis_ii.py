@@ -27,7 +27,7 @@ class qa_axis_xx(gr_unittest.TestCase):
         src = blocks.vector_source_i(src_data)
         dst = blocks.vector_sink_i()
         path = os.path.dirname(__file__)
-        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v', 1, '')
+        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v')
 
         self.tb.connect(src, instance)
         self.tb.connect(instance, dst)
@@ -44,7 +44,7 @@ class qa_axis_xx(gr_unittest.TestCase):
         src = blocks.vector_source_i(src_data)
         dst = blocks.vector_sink_i()
         path = os.path.dirname(__file__)
-        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v', 1, '')
+        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v')
 
         self.tb.connect(src, instance)
         self.tb.connect(instance, dst)
@@ -61,7 +61,7 @@ class qa_axis_xx(gr_unittest.TestCase):
         src = blocks.vector_source_i(src_data)
         dst = blocks.vector_sink_i()
         path = os.path.dirname(__file__)
-        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v', 1, '')
+        instance = axis_ii(f'{path}/testverilog/axis/gr_tb_axis.v')
 
         self.tb.connect(src, instance)
         self.tb.connect(instance, dst)

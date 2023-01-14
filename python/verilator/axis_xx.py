@@ -7,13 +7,11 @@
 #
 
 
-
 from . import verilator_python as pybind
 from gnuradio import gr
 import os
 import tempfile
 import subprocess
-import shutil
 import traceback
 from . import template
 
@@ -37,7 +35,7 @@ class WorkingDirectory(object):
 
 
 class axis_xx(object):
-    def __init__(self, verilog_file_path, io_ratio, verilator_options, trace=False):
+    def __init__(self, verilog_file_path, io_ratio=1, verilator_options='', trace=False):
         self.logger = gr.logger(self.alias())
         self.data_width = 64
         self.heart = None
@@ -114,20 +112,14 @@ class axis_ii(gr.hier_block2, axis_xx):
     """
     Axi-stream instance for int32 data type
     """
-    def __init__(self, verilog_file_path, io_ratio, verilator_options, **kwargs):
+    def __init__(self, verilog_file_path, **kwargs):
         gr.hier_block2.__init__(
             self,
             "Verilator AXI-Stream",
             gr.io_signature(1, 1, gr.sizeof_int),
             gr.io_signature(1, 1, gr.sizeof_int)
         )
-        axis_xx.__init__(
-            self,
-            verilog_file_path,
-            io_ratio,
-            verilator_options,
-            **kwargs
-        )
+        axis_xx.__init__(self, verilog_file_path, **kwargs)
         self.data_width = 32
         self.build()
 
@@ -139,40 +131,6 @@ class axis_ii(gr.hier_block2, axis_xx):
 
     def new_axis(self, libso_filepath):
         return pybind.axis_ii(
-            libso_filepath,
-            self.verilator_options
-        )
-
-
-class axis_sc16(gr.hier_block2, axis_xx):
-    """
-    Axi-stream instance for complex int16 data type
-    """
-    def __init__(self, verilog_file_path, io_ratio, verilator_options, **kwargs):
-        gr.hier_block2.__init__(
-            self,
-            "Verilator AXI-Stream",
-            gr.io_signature(1, 1, gr.sizeof_int),
-            gr.io_signature(1, 1, gr.sizeof_int)
-        )
-        axis_xx.__init__(
-            self,
-            verilog_file_path,
-            io_ratio,
-            verilator_options,
-            **kwargs
-        )
-        self.data_width = 32
-        self.build()
-
-        ##################################################
-        # Conections
-        ##################################################
-        self.connect((self, 0), (self.heart, 0))
-        self.connect((self.heart, 0), (self, 0))
-
-    def new_axis(self, libso_filepath):
-        return pybind.axis_sc16(
             libso_filepath,
             self.verilator_options
         )
