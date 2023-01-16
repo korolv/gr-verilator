@@ -38,6 +38,9 @@ axis_impl<T>::axis_impl(const char* libso_filepath, const char* options)
     assert(create != nullptr);
 
     d_dut = create(d_io_ratio);
+
+    gr::block::set_max_output_buffer(256);
+    d_dut->set_iteration_limit(256+32);
 }
 
 /*
@@ -63,7 +66,7 @@ int axis_impl<T>::general_work(int noutput_items,
     result = d_dut->general_work(noutput_items, ninput_items, input_items, output_items);
 
     if (result.items.input != std::round(d_io_ratio * result.items.output))
-        gr::block::d_logger->warn("Too big ratio difference input/output: {}/{}", result.items.input, result.items.output);
+        gr::block::d_logger->warn("Input/Output ratio difference: {}/{}", result.items.input, result.items.output);
 
     gr::block::consume_each(result.items.input);
 

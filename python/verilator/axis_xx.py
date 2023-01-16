@@ -78,6 +78,7 @@ class axis_xx(object):
                     f'-GDATA_WIDTH={self.data_width}',
                     '-o', OBJECT_SO,
                     '-y', verilog_dirpath,
+                    '-Wno-fatal',
                     self.verilog,
                     WRAPPER_CPP
                 ]

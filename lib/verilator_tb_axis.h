@@ -34,6 +34,7 @@ private:
     } gr;
     std::uint64_t d_time;
     unsigned d_time_per_clock;
+    unsigned d_iteration_limit;
 
 public:
     Axis(void* top, float io_ratio);
@@ -45,6 +46,7 @@ public:
                                     std::vector<int>& ninput_items,
                                     std::vector<const void*>& input_items,
                                     std::vector<void*>& output_items);
+    virtual void set_iteration_limit(unsigned limit);
 };
 };
 

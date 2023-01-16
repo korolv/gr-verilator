@@ -44,7 +44,8 @@ d_top(top),
 d_io_ratio(io_ratio),
 gr({0}),
 d_time(0),
-d_time_per_clock(1)
+d_time_per_clock(1),
+d_iteration_limit(300)
 {
     assert(d_top != nullptr);
 
@@ -90,6 +91,7 @@ WorkResult Axis<T>::general_work(int noutput_items,
     WorkResult result;
     result.noutput_items = 0;
     int ninput_items_required = std::round(d_io_ratio * noutput_items);
+    unsigned niteration = 0;
 
     do {
         gr.m_axis_tvalid = (ninput_items_required > result.items.input);
@@ -131,9 +133,15 @@ WorkResult Axis<T>::general_work(int noutput_items,
             result.items.output++;
         }
 
-    } while (gr.s_axis_tready);
+    } while (gr.s_axis_tready && (niteration++ < d_iteration_limit));
 
     return result;
+}
+
+template <class T>
+void Axis<T>::set_iteration_limit(unsigned limit)
+{
+    d_iteration_limit = limit;
 }
 
 } // namespace tb
