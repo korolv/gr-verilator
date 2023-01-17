@@ -35,7 +35,7 @@ class WorkingDirectory(object):
 
 
 class axis_xx(object):
-    def __init__(self, verilog_file_path, io_ratio=1, verilator_options='', trace=False):
+    def __init__(self, verilog_file_path, io_ratio=1, options=None, trace=False):
         self.logger = gr.logger(self.alias())
         self.data_width = 64
         self.heart = None
@@ -55,7 +55,7 @@ class axis_xx(object):
 
         self.verilog = verilog_file_path
         self.io_ratio = io_ratio
-        self.verilator_options = verilator_options
+        self.verilator_options = options
 
     def build(self):
         verilog_dirpath = os.path.dirname(self.verilog)
@@ -82,6 +82,8 @@ class axis_xx(object):
                     self.verilog,
                     WRAPPER_CPP
                 ]
+                if self.verilator_options and isinstance(self.verilator_options, list):
+                    verilator_args.extend(self.verilator_options)
                 if (self.trace_filepath):
                     verilator_args.extend(['-CFLAGS', f'-fPIC --std=c++11 -Wall -DDUT_TRACE="{self.trace_filepath}"', '--trace'])
                 else:
@@ -133,5 +135,5 @@ class axis_ii(gr.hier_block2, axis_xx):
     def new_axis(self, libso_filepath):
         return pybind.axis_ii(
             libso_filepath,
-            self.verilator_options
+            ''
         )

@@ -1,16 +1,16 @@
 id: verilator_axis
-label: AXI-Stream
+label: AXI-Stream 32
 category: '[Verilator]'
 
 templates:
   imports: from gnuradio import verilator
-  make: verilator.axis_${type.fcn}(${verilogfile}, io_ratio=${io_ratio}, trace=${trace})
+  make: verilator.axis_${type.fcn}(${verilogfile}, io_ratio=${io_ratio}, options=${voptions}, trace=${trace})
 
 parameters:
 - id: type
   label: IO Type
   dtype: enum
-  options: [int-int, sc16-sc16, sc16-int]
+  options: [Integer->Integer, Cmplex(int16)->Complex(int16), Complex(int16)->Integer]
   option_attributes:
     fcn: [ii, ii, ii]
     input: [int, sc16, sc16]
@@ -24,6 +24,11 @@ parameters:
   label: IO Ratio
   dtype: real
   default: '1.0'
+
+- id: voptions
+  label: Verilator options
+  dtype: raw
+  default: []
 
 - id: trace
   label: Trace
