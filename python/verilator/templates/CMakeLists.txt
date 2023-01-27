@@ -3,7 +3,7 @@ file(READ ${TEMPLATE_DUT_HDR} dut_hdr_content)
 
 configure_file(template.py.in ${CMAKE_CURRENT_BINARY_DIR}/template.py @ONLY)
 
-install(FILES template.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/verilator)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/template.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/verilator)
 
 add_custom_target(
   copy_templates_for_tests ALL
